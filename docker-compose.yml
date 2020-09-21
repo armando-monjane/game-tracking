@@ -1,0 +1,36 @@
+version: '3'
+services:
+    ms-sql-server:
+        image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+        environment:
+            ACCEPT_EULA: "Y"
+            SA_PASSWORD: "P@55w0rd2020"
+            MSSQL_PID: "Express"
+        ports:
+            - "1433:1433"
+
+    game-tracking-api: 
+        build: ./GameTrackingAPI
+        environment:
+            DBServer: "ms-sql-server"
+            DBPort: "1433"
+            DBUser: "SA"
+            DBPassword: "P@55w0rd2020"
+            Database: "GamerDB"
+        ports:
+            - "8080:80"
+        depends_on:
+            - ms-sql-server
+
+    game-tracking-client:
+        container_name: game-tracking-client
+        build: ./game-tracking-client
+        ports:
+            - 3000:3000
+        environment:
+            - CHOKIDAR_USEPOLLING=true
+        depends_on: 
+            - game-tracking-api
+        stdin_open: true
+
+    
