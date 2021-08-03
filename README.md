@@ -1,4 +1,4 @@
-# Dockerized .NET Core Web API + ReactJs Client
+# Dockerized .NET Core Web API + React Client
 
 run ```docker-compose up```
 
